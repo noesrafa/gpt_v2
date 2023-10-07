@@ -35,7 +35,8 @@ export default function Home() {
       setIsLoading({ ...isLoading, isSending: true });
       setTimeout(() => {
         setIsLoading({ isSending: false, isTyping: true });
-      }, 1500);
+      }, 2000);
+
       const response = await fetch("/api/openai", {
         method: "POST",
         body: JSON.stringify({
