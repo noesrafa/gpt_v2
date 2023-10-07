@@ -1,10 +1,5 @@
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
-const API_KEY = process.env.OPENAI_API_KEY as string;
-
-const openai = new OpenAI({
-  apiKey: API_KEY,
-});
 
 const functions = [
   {
@@ -33,9 +28,9 @@ const functions = [
 ];
 
 export async function POST(request: Request) {
-  const { messages } = await request.json();
+  const { messages, apiKey } = await request.json();
 
-  if (!messages) {
+  if (!messages || !apiKey) {
     return NextResponse.json({ message: "Query is required" });
   }
 
@@ -43,6 +38,22 @@ export async function POST(request: Request) {
   // if (messages) {
   //   return NextResponse.json({ message: messages });
   // }
+
+  if (process.env.OPENAI_API_KEY === undefined) {
+    console.log("No API key provided.");
+    return NextResponse.json(
+      {
+        message: "No API key provided.",
+      },
+      {
+        status: 401,
+      }
+    );
+  }
+
+  const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+  });
 
   const responsePinecone = await fetch("http://localhost:3000/api/pinecone/", {
     method: "POST",
