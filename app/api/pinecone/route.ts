@@ -7,7 +7,7 @@ import { PineconeStore } from "langchain/vectorstores/pinecone";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import * as fs from "fs";
 
-new OpenAI({ openAIApiKey: process.env.OPENAI_API_KEY });
+new OpenAI({ openAIApiKey: process.env.OPENAI_API_KEY_CUSTOM || "" });
 
 // CONFIG PINECONE
 const pinecone = new Pinecone({
@@ -20,7 +20,9 @@ const pineconeIndex = pinecone.Index(process.env.PINECONE_INDEX || "");
 // GET STORE
 async function getStore() {
   const vectorStore = await PineconeStore.fromExistingIndex(
-    new OpenAIEmbeddings(),
+    new OpenAIEmbeddings({
+      openAIApiKey: process.env.OPENAI_API_KEY_CUSTOM || "",
+    }),
     { pineconeIndex }
   );
 
@@ -63,6 +65,13 @@ async function queryDoc(query: string) {
 
 export async function POST(request: Request) {
   const { query, sendDocs } = await request.json();
+
+  // ========= TEST =========
+  // if (query) {
+  //   const results = await queryDoc(query);
+  //   return NextResponse.json({ message: results });
+  // }
+  // ========================
 
   if (sendDocs) {
     await uploadDocs();

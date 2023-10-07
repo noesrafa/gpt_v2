@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import OpenAI from "openai";
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.OPENAI_API_KEY_CUSTOM,
 });
 
 const functions = [
@@ -40,10 +40,10 @@ export async function POST(request: Request) {
 
   // console.log("-----------------------------------------------------");
   // if (messages) {
-  //   return NextResponse.json({ message: process.env.OPENAI_API_KEY });
+  //   return NextResponse.json({ message: openai.apiKey });
   // }
 
-  if (process.env.OPENAI_API_KEY === undefined) {
+  if (process.env.OPENAI_API_KEY_CUSTOM === undefined) {
     console.log("No API key provided.");
     return NextResponse.json(
       {
@@ -67,6 +67,7 @@ export async function POST(request: Request) {
   });
 
   const context = await responsePinecone.json();
+
   const formatedContext = context
     .map((text: any) => text.pageContent)
     .join("\n");
