@@ -1,4 +1,4 @@
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY as string;
+const OPENAI_API_KEY_CUSTOM = process.env.OPENAI_API_KEY_CUSTOM as string;
 const PINECONE_API_KEY = process.env.PINECONE_API_KEY as string;
 const PINECONE_ENVIRONMENT = process.env.PINECONE_ENVIRONMENT as string;
 const PINECONE_INDEX = process.env.PINECONE_INDEX as string;
@@ -98,7 +98,7 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
   // Initialize the LLM to use to answer the question.
   const model = new OpenAI({
-    openAIApiKey: OPENAI_API_KEY,
+    openAIApiKey: OPENAI_API_KEY_CUSTOM,
   });
   const text = fs.readFileSync("./document.txt", {
     encoding: "utf8",
