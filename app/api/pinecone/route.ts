@@ -11,11 +11,11 @@ new OpenAI({ openAIApiKey: process.env.OPENAI_API_KEY });
 
 // CONFIG PINECONE
 const pinecone = new Pinecone({
-  apiKey: process.env.PINECONE_API_KEY,
-  environment: process.env.PINECONE_ENVIRONMENT,
+  apiKey: process.env.PINECONE_API_KEY || "",
+  environment: process.env.PINECONE_ENVIRONMENT || "",
 });
 
-const pineconeIndex = pinecone.Index(process.env.PINECONE_INDEX);
+const pineconeIndex = pinecone.Index(process.env.PINECONE_INDEX || "");
 
 // GET STORE
 async function getStore() {
