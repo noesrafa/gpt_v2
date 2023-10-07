@@ -1,8 +1,3 @@
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY as string;
-const PINECONE_API_KEY = process.env.PINECONE_API_KEY as string;
-const PINECONE_ENVIRONMENT = process.env.PINECONE_ENVIRONMENT as string;
-const PINECONE_INDEX = process.env.PINECONE_INDEX as string;
-
 import { NextResponse } from "next/server";
 
 import { Pinecone } from "@pinecone-database/pinecone";
@@ -12,13 +7,15 @@ import { PineconeStore } from "langchain/vectorstores/pinecone";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import * as fs from "fs";
 
+new OpenAI({ openAIApiKey: process.env.OPENAI_API_KEY });
+
 // CONFIG PINECONE
 const pinecone = new Pinecone({
-  apiKey: PINECONE_API_KEY,
-  environment: PINECONE_ENVIRONMENT,
+  apiKey: process.env.PINECONE_API_KEY,
+  environment: process.env.PINECONE_ENVIRONMENT,
 });
 
-const pineconeIndex = pinecone.Index(PINECONE_INDEX);
+const pineconeIndex = pinecone.Index(process.env.PINECONE_INDEX);
 
 // GET STORE
 async function getStore() {
@@ -32,9 +29,6 @@ async function getStore() {
 
 // UPLOAD DOCS
 async function uploadDocs() {
-  new OpenAI({
-    openAIApiKey: OPENAI_API_KEY,
-  });
   const text = fs.readFileSync("./document.txt", {
     encoding: "utf8",
     flag: "r",
@@ -75,8 +69,12 @@ export async function POST(request: Request) {
     return NextResponse.json("Creados");
   }
 
-  const results = await queryDoc(query);
-  return NextResponse.json(results);
+  try {
+    const results = await queryDoc(query);
+    return NextResponse.json(results);
+  } catch (error) {
+    return NextResponse.json(error);
+  }
 }
 
 // -------------------------- DELETE DOCS ----------------------------------

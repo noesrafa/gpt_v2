@@ -70,26 +70,38 @@ export async function POST(request: Request) {
   const formatedContext = context
     .map((text: any) => text.pageContent)
     .join("\n");
-  console.log(formatedContext, "/n -------------------------------------- /n ");
+  console.log(formatedContext, "\n -------------------------------------- \n ");
 
   const messages_chat = [
     {
       role: "system",
       content: `Eres un agente de soporte que trabaja en la empresa heru. utiliza este contexto para responder la pregunta del usuario: \n ${formatedContext}
+      CONTESTA EN 3 SENTENCIAS O MENOS. \n
       
-      USER QUESTION: /n
+      USER QUESTION: \n
       `,
     },
     ...messages,
   ];
 
-  const response = await openai.chat.completions.create({
-    model: "gpt-3.5-turbo",
-    // @ts-ignore
-    messages: messages_chat,
-    functions: functions,
-    function_call: "auto", // auto is default, but we'll be explicit
-  });
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
+      // @ts-ignore
+      messages: messages_chat,
+      functions: functions,
+      function_call: "auto", // auto is default, but we'll be explicit
+    });
 
-  return NextResponse.json(response);
+    return NextResponse.json(response);
+  } catch (error) {
+    return NextResponse.json(
+      {
+        message: error,
+      },
+      {
+        status: 401,
+      }
+    );
+  }
 }
