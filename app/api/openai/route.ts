@@ -55,7 +55,10 @@ export async function POST(request: Request) {
     );
   }
 
-  const responsePinecone = await fetch("http://localhost:3000/api/pinecone/", {
+  const URL =
+    process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:3000/api/";
+
+  const responsePinecone = await fetch(URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
