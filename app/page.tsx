@@ -40,6 +40,7 @@ export default function Home() {
         method: "POST",
         body: JSON.stringify({
           messages: messagesToSend.slice(-3),
+          apiKey: process.env.OPENAI_API_KEY,
         }),
       });
       const data = await response.json();
