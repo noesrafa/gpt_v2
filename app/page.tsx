@@ -84,9 +84,8 @@ export default function Home() {
       </header>
       <section className="max-w-[800px] mx-auto flex flex-col gap-6 px-4 pt-24 pb-40">
         {messages.map((message, index) => (
-          <div ref={lastMessage}>
+          <div ref={lastMessage} key={index}>
             <Message
-              key={index}
               role={message.role}
               message={message.content}
               userName={message.role === "user" ? "juanito" : "HERU SOPORTE"}
