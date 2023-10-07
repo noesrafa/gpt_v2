@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
 
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
 const functions = [
   {
     name: "get_current_weather",
@@ -28,15 +32,15 @@ const functions = [
 ];
 
 export async function POST(request: Request) {
-  const { messages, apiKey } = await request.json();
+  const { messages } = await request.json();
 
-  if (!messages || !apiKey) {
+  if (!messages) {
     return NextResponse.json({ message: "Query is required" });
   }
 
   // console.log("-----------------------------------------------------");
   // if (messages) {
-  //   return NextResponse.json({ message: messages });
+  //   return NextResponse.json({ message: process.env.OPENAI_API_KEY });
   // }
 
   if (process.env.OPENAI_API_KEY === undefined) {
@@ -50,10 +54,6 @@ export async function POST(request: Request) {
       }
     );
   }
-
-  const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-  });
 
   const responsePinecone = await fetch("http://localhost:3000/api/pinecone/", {
     method: "POST",

@@ -171,7 +171,7 @@ export const MessageIcon = () => {
         stroke="#1D8FF3"
         strokeWidth="2"
         strokeLinecap="round"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -190,7 +190,7 @@ export const SendIcon = ({ disabled = false }) => {
         stroke={disabled ? "#bcbcbc" : "#DAEDFE"}
         strokeWidth="1.73834"
         strokeLinecap="round"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
