@@ -55,10 +55,15 @@ export async function POST(request: Request) {
     );
   }
 
-  const URL =
-    process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:3000/api/";
+  let apiUrl = "";
 
-  const responsePinecone = await fetch(URL, {
+  if (process.env.NODE_ENV === "production") {
+    apiUrl = "https://gpt-v2-git-main-noesrafa.vercel.app/api/";
+  } else {
+    apiUrl = "http://localhost:3000/api/";
+  }
+
+  const responsePinecone = await fetch(apiUrl + "pinecone", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
