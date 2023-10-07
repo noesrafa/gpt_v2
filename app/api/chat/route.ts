@@ -1,10 +1,9 @@
 //@ts-nocheck
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
-const API_KEY = process.env.OPENAI_API_KEY_CUSTOM as string;
 
 const openai = new OpenAI({
-  apiKey: API_KEY,
+  apiKey: process.env.OPENAI_API_KEY_CUSTOM,
 });
 
 const functions = [
