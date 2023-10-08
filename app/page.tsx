@@ -102,7 +102,7 @@ export default function Home() {
         <div className="h-20" />
         {messages.map(({ role, content, component }, index) => {
           return (
-            <div ref={index === 1 ? lastMessage : null} key={index}>
+            <div ref={index === 0 ? null : lastMessage} key={index}>
               <Message
                 role={role}
                 message={content}
