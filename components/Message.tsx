@@ -12,7 +12,7 @@ interface Props {
 
 const PlansMessage = () => {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-4">
       <div>
         <Message
           role={"system"}
@@ -22,7 +22,7 @@ const PlansMessage = () => {
           userName={"HERU SOPORTE"}
         />
       </div>
-      <div className="pr-4 pl-6 flex flex-col gap-3 lg:flex-row">
+      <div className="lg:pr-4 lg:pl-6 flex flex-col gap-3 lg:flex-row">
         <ProductCard
           title={"Heru plus"}
           description={

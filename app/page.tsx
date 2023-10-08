@@ -78,8 +78,6 @@ export default function Home() {
     lastMessage?.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  console.log(messages, isLoading.isSending, isLoading.isTyping);
-
   return (
     <main className=" bg-white h-screen relative ">
       <header className="backdrop-blur-2xl bg-blue-200/20 border-b-blue-200/50 border-b-[1px] fixed top-0 w-full z-50">
