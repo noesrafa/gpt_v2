@@ -35,12 +35,12 @@ export default function Home() {
       { role: "user", content: message, component: null },
     ]);
 
-    try {
-      setIsLoading({ ...isLoading, isSending: true });
-      setTimeout(() => {
-        setIsLoading({ isSending: false, isTyping: true });
-      }, 2000);
+    setIsLoading({ isTyping: false, isSending: true });
+    const timeoutId = setTimeout(() => {
+      setIsLoading({ isSending: false, isTyping: true });
+    }, 2000);
 
+    try {
       const response = await fetch("/api/openai", {
         method: "POST",
         body: JSON.stringify({
@@ -51,7 +51,6 @@ export default function Home() {
 
       if (data?.choices[0]?.finish_reason === "function_call") {
         functionCall(data.choices[0], setMessages);
-        setIsLoading({ isSending: false, isTyping: false });
       } else {
         setMessages((prev) => [
           ...prev,
@@ -65,7 +64,8 @@ export default function Home() {
     } catch (error) {
       console.log(error);
     } finally {
-      setIsLoading({ ...isLoading, isTyping: false });
+      setIsLoading({ isSending: false, isTyping: false });
+      clearTimeout(timeoutId);
     }
   };
 
@@ -77,6 +77,8 @@ export default function Home() {
     // @ts-ignore
     lastMessage?.current?.scrollIntoView({ behavior: "smooth" });
   };
+
+  console.log(messages, isLoading.isSending, isLoading.isTyping);
 
   return (
     <main className=" bg-white h-screen relative ">
