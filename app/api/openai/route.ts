@@ -22,8 +22,12 @@ const functions = [
     },
   },
   {
-    name: "get_random_joke",
-    description: "Get a random joke from rafa",
+    name: "get_plans",
+    description: `
+      RULES: THE USER MUST SAY 'PLAN' OR 'PLANES' IN THE MESSAGE IF NOT FUNCTION MUST NOT BE CALLED. 
+      Get a list of plans, usefull for users who ask for plans, contract a plan.
+      EXAMPLES: 'Quiero contratar un plan.', 'Quiero un plan.'
+      `,
     parameters: {
       type: "object",
       properties: {},
@@ -34,14 +38,15 @@ const functions = [
 export async function POST(request: Request) {
   const { messages } = await request.json();
 
+  console.log(
+    "\n -------------------------------------- \n ",
+    messages,
+    "\n -------------------------------------- \n "
+  );
+
   if (!messages) {
     return NextResponse.json({ message: "Query is required" });
   }
-
-  // console.log("-----------------------------------------------------");
-  // if (messages) {
-  //   return NextResponse.json({ message: openai.apiKey });
-  // }
 
   if (process.env.OPENAI_API_KEY_CUSTOM === undefined) {
     console.log("No API key provided.");
@@ -55,15 +60,12 @@ export async function POST(request: Request) {
     );
   }
 
-  let apiUrl = "";
+  const isDevelopment = process.env.NODE_ENV;
+  const API_URL = isDevelopment
+    ? "https://gpt-v2-git-main-noesrafa.vercel.app/api/"
+    : "http://localhost:3000/api/";
 
-  if (process.env.NODE_ENV === "production") {
-    apiUrl = "https://gpt-v2-git-main-noesrafa.vercel.app/api/";
-  } else {
-    apiUrl = "http://localhost:3000/api/";
-  }
-
-  const responsePinecone = await fetch(apiUrl + "pinecone", {
+  const responsePinecone = await fetch(API_URL + "pinecone", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -79,13 +81,13 @@ export async function POST(request: Request) {
   const formatedContext = context
     .map((text: any) => text.pageContent)
     .join("\n");
-  console.log(formatedContext, "\n -------------------------------------- \n ");
 
   const messages_chat = [
     {
       role: "system",
-      content: `Eres un agente de soporte que trabaja en la empresa heru. utiliza este contexto para responder la pregunta del usuario: \n ${formatedContext}
-      CONTESTA EN 3 SENTENCIAS O MENOS. \n
+      content: `
+      Eres un agente de soporte que trabaja en la empresa heru. 
+      Utiliza este contexto para responder la pregunta del usuario en 3 sentencias o menos: \n ${formatedContext}
       
       USER QUESTION: \n
       `,

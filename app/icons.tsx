@@ -67,36 +67,38 @@ interface Props {
 export const CheckIcon = ({ type = "check" }: Props) => {
   if (type === "benefit") {
     return (
-      <svg
-        width="13"
-        height="13"
-        viewBox="0 0 13 13"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <rect
-          y="0.221344"
-          width="12.0127"
-          height="12.0127"
-          rx="6.00635"
-          fill="#1D8FF3"
-        />
-        <path
-          d="M3.39014 6.52068L4.93904 8.06958L8.62279 4.38583"
-          stroke="#DAEDFE"
-          strokeWidth="1.60169"
-          strokeLinecap="round"
-        />
-      </svg>
+      <div className="w-[16px]">
+        <svg
+          width="13"
+          height="13"
+          viewBox="0 0 13 13"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect
+            y="0.221344"
+            width="12.0127"
+            height="12.0127"
+            rx="6.00635"
+            fill="#1D8FF3"
+          />
+          <path
+            d="M3.39014 6.52068L4.93904 8.06958L8.62279 4.38583"
+            stroke="#DAEDFE"
+            strokeWidth="1.60169"
+            strokeLinecap="round"
+          />
+        </svg>
+      </div>
     );
   }
 
   if (type === "empty") {
     return (
       <svg
-        width="15"
-        height="16"
-        viewBox="0 0 15 16"
+        width="20"
+        height="20"
+        viewBox="0 0 20 20"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >

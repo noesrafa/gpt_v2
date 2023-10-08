@@ -2,7 +2,7 @@ import { CheckIcon, HeruIcon } from "@/app/icons";
 import React from "react";
 
 interface Props {
-  role: "system" | "user";
+  role: string;
   message: string;
   userName?: string;
   isSending?: boolean;

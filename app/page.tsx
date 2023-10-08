@@ -4,6 +4,8 @@ import Message from "@/components/Message";
 import { BackIcon, HeruLogo, OptionIcon, SendIcon } from "./icons";
 import { useEffect, useRef, useState } from "react";
 import { functionCall } from "@/utils/function_call";
+import Typing from "@/components/Typing";
+import ProductCard from "@/components/ProductCard";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState({
@@ -11,25 +13,32 @@ export default function Home() {
     isTyping: false,
   });
   const [inputValue, setInputValue] = useState<string>("");
-
-  const [messages, setMessages] = useState<Message[]>([
+  const [messages, setMessages] = useState([
     {
       role: "system",
       content: "Hola, ¿en qué puedo ayudarte?",
+      component: null,
     },
   ]);
-
   const lastMessage = useRef(null);
 
   const messageHandler = async (message: string) => {
     setInputValue("");
-    if (!message || isLoading.isSending) return;
+    if (!message || isLoading.isSending || isLoading.isTyping) return;
+
+    const messagesWithoutComponent = messages.map((message) => ({
+      role: message.role,
+      content: message.content,
+    }));
 
     const messagesToSend: Message[] = [
-      ...messages,
+      ...messagesWithoutComponent,
       { role: "user", content: message },
     ];
-    setMessages(messagesToSend);
+    setMessages((prev) => [
+      ...prev,
+      { role: "user", content: message, component: null },
+    ]);
 
     try {
       setIsLoading({ ...isLoading, isSending: true });
@@ -46,13 +55,17 @@ export default function Home() {
       const data = await response.json();
 
       if (data?.choices[0]?.finish_reason === "function_call") {
-        functionCall(data.choices[0]);
+        functionCall(data.choices[0], setMessages);
         return;
       }
 
-      setMessages([
-        ...messagesToSend,
-        { role: "system", content: data.choices?.[0]?.message.content },
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "system",
+          content: data.choices?.[0]?.message.content,
+          component: null,
+        },
       ]);
     } catch (error) {
       console.log(error);
@@ -72,7 +85,7 @@ export default function Home() {
 
   return (
     <main className=" bg-white h-screen relative ">
-      <header className="backdrop-blur-xl bg-blue-200/20 border-b-blue-200/50 border-b-[1px] fixed top-0 w-full">
+      <header className="backdrop-blur-xl bg-blue-200/20 border-b-blue-200/50 border-b-[1px] fixed top-0 w-full z-50">
         <div className="flex justify-between items-center max-w-[800px] mx-auto pt-5 pb-3 px-4">
           <button className="w-[40px] h-[40px] rounded-full bg-white grid place-items-center shadow-sm">
             <BackIcon />
@@ -83,30 +96,64 @@ export default function Home() {
           </button>
         </div>
       </header>
-      <section className="max-w-[800px] mx-auto flex flex-col gap-6 px-4 pt-24 pb-40">
-        {messages.map((message, index) => (
-          <div ref={lastMessage} key={index}>
-            <Message
-              role={message.role}
-              message={message.content}
-              userName={message.role === "user" ? "juanito" : "HERU SOPORTE"}
-              isSending={
-                index === messages.length - 1 ? isLoading.isSending : false
-              }
-            />
-            {index === messages.length - 1 && isLoading.isTyping && (
-              <div className="bg-slate-50 flex space-x-2 px-8 py-6 rounded-full rounded-tl-none justify-center items-center scale-[40%] w-fit ml-[-14px] mt-[-6px]">
-                <div className="bg-slate-300 p-2  w-2 h-2 rounded-full animate-bounce blue-circle"></div>
-                <div className="bg-slate-300 p-2 w-2 h-2 rounded-full animate-bounce green-circle"></div>
-                <div className="bg-slate-300 p-2  w-2 h-2 rounded-full animate-bounce red-circle"></div>
+      {/* ================== MESSAGES ================== */}
+      <section className="max-w-[800px] mx-auto flex flex-col gap-6 px-4 pb-40">
+        <div className="h-20" />
+        {messages.map(({ role, content, component }, index) => {
+          if (component === "get_plans") {
+            return (
+              <div className="flex flex-col gap-3" key={index}>
+                <div ref={lastMessage}>
+                  <Message
+                    role={"system"}
+                    message={
+                      "Basado en tu régimen y actividades, te recomiendo estos planes:"
+                    }
+                    userName={"HERU SOPORTE"}
+                  />
+                </div>
+                <div className="pr-4 pl-6 flex flex-col gap-3 lg:flex-row">
+                  <ProductCard
+                    title={"Heru plus"}
+                    description={
+                      "Contabilidad mensual completa para las declaraciones de todos tus regímenes"
+                    }
+                    recommended
+                    price={849}
+                  />
+                  <ProductCard
+                    title={"Heru básico"}
+                    description={
+                      "Contabilidad mensual completa para las declaraciones de un solo régimen"
+                    }
+                    price={199}
+                  />
+                </div>
               </div>
-            )}
-          </div>
-        ))}
+            );
+          }
+
+          return (
+            <div ref={lastMessage} key={index}>
+              <Message
+                role={role}
+                message={content}
+                userName={role === "user" ? "CARLOS" : "HERU SOPORTE"}
+                isSending={
+                  index === messages.length - 1 ? isLoading.isSending : false
+                }
+              />
+              {index === messages.length - 1 && isLoading.isTyping && (
+                <Typing />
+              )}
+            </div>
+          );
+        })}
       </section>
+      {/* ================== INPUT ================== */}
       <form
         onSubmit={() => messageHandler(inputValue)}
-        className="w-full fixed bottom-0 mx-auto items-center flex flex-col px-2"
+        className="w-full fixed bottom-0 mx-auto items-center flex flex-col px-2 z-50"
       >
         <div className="bg-white w-full max-w-[800px] rounded-2xl p-2 flex border-slate-200 border-[1px] drop-shadow-md z-10">
           <input

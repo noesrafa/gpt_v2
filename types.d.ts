@@ -6,7 +6,7 @@ type Todo = {
 };
 
 type Message = {
-  role: "system" | "user";
+  role: string;
   content: string;
   userName?: string;
 };
