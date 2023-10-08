@@ -24,9 +24,33 @@ const functions = [
   {
     name: "get_plans",
     description: `
-      RULES: THE USER MUST SAY 'PLAN' OR 'PLANES' IN THE MESSAGE IF NOT FUNCTION MUST NOT BE CALLED. 
+      RULES: THE USER MUST SAY 'PLAN' OR 'PLANES' OR THE FUNCTION MUST NOT BE CALLED.
       Get a list of plans, usefull for users who ask for plans, contract a plan.
       EXAMPLES: 'Quiero contratar un plan.', 'Quiero un plan.'
+      `,
+    parameters: {
+      type: "object",
+      properties: {},
+    },
+  },
+  {
+    name: "link_fiscal_account",
+    description: `
+      RULES: THE USER MUST SAY 'vincular' OR 'sat' OR THE FUNCTION MUST NOT BE CALLED.
+      Usefull for users who want to link their fiscal account.
+      EXAMPLES: 'Quiero vincular mi cuenta', 'Quiero vincular mi SAT'
+      `,
+    parameters: {
+      type: "object",
+      properties: {},
+    },
+  },
+  {
+    name: "forgot_password",
+    description: `
+      RULES: THE USER MUST SAY 'contraseña' OR 'olvide' OR THE FUNCTION MUST NOT BE CALLED. 
+      Usefull for users who forgot their SAT password.
+      EXAMPLES: 'Olvide mi contraseña del sat', 'no me se mi contraseña del sat'
       `,
     parameters: {
       type: "object",

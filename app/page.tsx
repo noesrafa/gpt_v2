@@ -5,7 +5,6 @@ import { BackIcon, HeruLogo, OptionIcon, SendIcon } from "./icons";
 import { useEffect, useRef, useState } from "react";
 import { functionCall } from "@/utils/function_call";
 import Typing from "@/components/Typing";
-import ProductCard from "@/components/ProductCard";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState({
