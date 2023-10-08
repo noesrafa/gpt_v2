@@ -1,14 +1,53 @@
 import { CheckIcon, HeruIcon } from "@/app/icons";
 import React from "react";
+import ProductCard from "./ProductCard";
 
 interface Props {
   role: string;
   message: string;
   userName?: string;
   isSending?: boolean;
+  component?: string | null;
 }
 
-const Message = ({ role, message, userName, isSending }: Props) => {
+const PlansMessage = () => {
+  return (
+    <div className="flex flex-col gap-3">
+      <div>
+        <Message
+          role={"system"}
+          message={
+            "Basado en tu régimen y actividades, te recomiendo estos planes:"
+          }
+          userName={"HERU SOPORTE"}
+        />
+      </div>
+      <div className="pr-4 pl-6 flex flex-col gap-3 lg:flex-row">
+        <ProductCard
+          title={"Heru plus"}
+          description={
+            "Contabilidad mensual completa para las declaraciones de todos tus regímenes"
+          }
+          recommended
+          price={849}
+        />
+        <ProductCard
+          title={"Heru básico"}
+          description={
+            "Contabilidad mensual completa para las declaraciones de un solo régimen"
+          }
+          price={199}
+        />
+      </div>
+    </div>
+  );
+};
+
+const Message = ({ role, message, userName, isSending, component }: Props) => {
+  if (component === "get_plans") {
+    return <PlansMessage />;
+  }
+
   if (role === "system") {
     return (
       <div>

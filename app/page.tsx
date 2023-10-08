@@ -24,6 +24,7 @@ export default function Home() {
 
   const messageHandler = async (message: string) => {
     setInputValue("");
+    console.log(message, isLoading.isSending, isLoading.isTyping);
     if (!message || isLoading.isSending || isLoading.isTyping) return;
 
     const messagesWithoutComponent = messages.map((message) => ({
@@ -56,17 +57,17 @@ export default function Home() {
 
       if (data?.choices[0]?.finish_reason === "function_call") {
         functionCall(data.choices[0], setMessages);
-        return;
+        setIsLoading({ isSending: false, isTyping: false });
+      } else {
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: "system",
+            content: data.choices?.[0]?.message.content,
+            component: null,
+          },
+        ]);
       }
-
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "system",
-          content: data.choices?.[0]?.message.content,
-          component: null,
-        },
-      ]);
     } catch (error) {
       console.log(error);
     } finally {
@@ -80,18 +81,18 @@ export default function Home() {
 
   const scrollToBottom = () => {
     // @ts-ignore
-    lastMessage.current.scrollIntoView({ behavior: "smooth" });
+    lastMessage?.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
     <main className=" bg-white h-screen relative ">
-      <header className="backdrop-blur-xl bg-blue-200/20 border-b-blue-200/50 border-b-[1px] fixed top-0 w-full z-50">
+      <header className="backdrop-blur-2xl bg-blue-200/20 border-b-blue-200/50 border-b-[1px] fixed top-0 w-full z-50">
         <div className="flex justify-between items-center max-w-[800px] mx-auto pt-5 pb-3 px-4">
-          <button className="w-[40px] h-[40px] rounded-full bg-white grid place-items-center shadow-sm">
+          <button className="w-[40px] h-[40px] rounded-xl bg-white grid place-items-center shadow-sm">
             <BackIcon />
           </button>
           <HeruLogo />
-          <button className="w-[40px] h-[40px] rounded-full bg-white grid place-items-center shadow-sm">
+          <button className="w-[40px] h-[40px] rounded-xl bg-white grid place-items-center shadow-sm">
             <OptionIcon />
           </button>
         </div>
@@ -100,41 +101,8 @@ export default function Home() {
       <section className="max-w-[800px] mx-auto flex flex-col gap-6 px-4 pb-40">
         <div className="h-20" />
         {messages.map(({ role, content, component }, index) => {
-          if (component === "get_plans") {
-            return (
-              <div className="flex flex-col gap-3" key={index}>
-                <div ref={lastMessage}>
-                  <Message
-                    role={"system"}
-                    message={
-                      "Basado en tu régimen y actividades, te recomiendo estos planes:"
-                    }
-                    userName={"HERU SOPORTE"}
-                  />
-                </div>
-                <div className="pr-4 pl-6 flex flex-col gap-3 lg:flex-row">
-                  <ProductCard
-                    title={"Heru plus"}
-                    description={
-                      "Contabilidad mensual completa para las declaraciones de todos tus regímenes"
-                    }
-                    recommended
-                    price={849}
-                  />
-                  <ProductCard
-                    title={"Heru básico"}
-                    description={
-                      "Contabilidad mensual completa para las declaraciones de un solo régimen"
-                    }
-                    price={199}
-                  />
-                </div>
-              </div>
-            );
-          }
-
           return (
-            <div ref={lastMessage} key={index}>
+            <div ref={index === 1 ? lastMessage : null} key={index}>
               <Message
                 role={role}
                 message={content}
@@ -142,6 +110,7 @@ export default function Home() {
                 isSending={
                   index === messages.length - 1 ? isLoading.isSending : false
                 }
+                component={component}
               />
               {index === messages.length - 1 && isLoading.isTyping && (
                 <Typing />

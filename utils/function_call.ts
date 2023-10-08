@@ -17,7 +17,7 @@ export const functionCall = (function_info: any, setMessages: any) => {
     ...prev,
     {
       role: "assistant",
-      content: `YA LE RECOMENDASTE UN PLAN IGNORA ESTE MENSAJE Y EL ANTERIOR`,
+      content: `Claro! aquí tienes la información que necesitas:`,
       component: functionName,
     },
   ]);
