@@ -13,13 +13,7 @@ export default function Home() {
     isTyping: false,
   });
   const [inputValue, setInputValue] = useState<string>("");
-  const [messages, setMessages] = useState([
-    {
-      role: "system",
-      content: "Hola, ¿en qué puedo ayudarte?",
-      component: null,
-    },
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const lastMessage = useRef(null);
 
   const messageHandler = async (message: string) => {
@@ -100,6 +94,11 @@ export default function Home() {
       {/* ================== MESSAGES ================== */}
       <section className="max-w-[800px] mx-auto flex flex-col gap-6 px-4 pb-40">
         <div className="h-20" />
+        <Message
+          role={"system"}
+          message={"Hola, ¿en qué puedo ayudarte?"}
+          userName={"HERU SOPORTE"}
+        />
         {messages.map(({ role, content, component }, index) => {
           return (
             <div ref={index === 0 ? null : lastMessage} key={index}>

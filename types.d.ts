@@ -9,4 +9,5 @@ type Message = {
   role: string;
   content: string;
   userName?: string;
+  component?: string | null;
 };

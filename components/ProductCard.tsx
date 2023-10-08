@@ -34,6 +34,9 @@ const ProductCard = ({ title, description, recommended, price }: Props) => {
           </li>
         </ul>
       </div>
+      <span className="text-blue-950">
+        <b className="text-xl">${price}</b>/mes
+      </span>
       <button
         className={
           recommended
