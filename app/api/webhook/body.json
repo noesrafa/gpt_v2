@@ -1,0 +1,81 @@
+{
+  "portalId": 9494835,
+  "userMessage": { "message": "Que hacen", "quickReply": null },
+  "parsedResult": null,
+  "bot": {
+    "nickname": "Chatflow Heru",
+    "conversationChannelType": "WEB",
+    "chatflowId": 33330824
+  },
+  "module": {
+    "botNickname": "Chatflow Heru",
+    "fallbackNextModuleNickname": null,
+    "failureNextModuleNickname": null,
+    "moduleType": "WEBHOOK",
+    "nickname": "Nara",
+    "prompt": null,
+    "promptHtml": null,
+    "config": {
+      "id": 700132,
+      "timeout": 3000,
+      "customPayload": null,
+      "expectingResponse": true
+    }
+  },
+  "session": {
+    "vid": 81874401,
+    "conversationId": 5721124280,
+    "botNickname": "Chatflow Heru",
+    "currentModuleNickname": "Nara",
+    "sessionStartedAt": 1698531170617,
+    "lastInteractionAt": 1698531178315,
+    "state": "ACTIVE",
+    "customState": {},
+    "responseExpected": false,
+    "parsedResponses": {
+      "ventas o soporte": {
+        "parsedResponse": "Sí",
+        "parsedQuickReplyLabel": "Sí",
+        "customState": {},
+        "propertyChanges": {
+          "contact": { "que_tipos_de_productos_vendes__clone": "Sí" }
+        },
+        "propertyValueType": "STRING",
+        "success": true,
+        "preempted": false,
+        "executionTime": 1698531170678
+      },
+      "Info adicional": {
+        "parsedResponse": "Que hacen",
+        "parsedQuickReplyLabel": null,
+        "customState": {},
+        "propertyChanges": {},
+        "propertyValueType": "STRING",
+        "success": true,
+        "preempted": false,
+        "executionTime": 1698531178270
+      },
+      "Obtener correo": {
+        "parsedResponse": "1@m.com",
+        "parsedQuickReplyLabel": null,
+        "customState": {},
+        "propertyChanges": { "contact": { "email": "1@m.com" } },
+        "propertyValueType": "STRING",
+        "success": true,
+        "preempted": true,
+        "executionTime": 1698531170781
+      }
+    },
+    "properties": {
+      "CONTACT": {
+        "que_tipos_de_productos_vendes__clone": {
+          "value": "Sí",
+          "synchedAt": 1698531170778
+        },
+        "email": { "value": "1@m.com", "synchedAt": 1698531170852 }
+      },
+      "CONVERSATION": { "threadId": { "value": "5721124280", "synchedAt": 0 } }
+    }
+  },
+  "customPayload": null
+}
