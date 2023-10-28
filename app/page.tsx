@@ -15,6 +15,8 @@ export default function Home() {
   const [messages, setMessages] = useState<Message[]>([]);
   const lastMessage = useRef(null);
 
+  console.log(messages);
+
   const messageHandler = async (message: string) => {
     setInputValue("");
     console.log(message, isLoading.isSending, isLoading.isTyping);
@@ -84,15 +86,8 @@ export default function Home() {
         id="hs-script-loader"
         async
         defer
-        src="//js-na1.hs-scripts.com/22603027.js"
-      ></script> */}
-      <script
-        type="text/javascript"
-        id="hs-script-loader"
-        async
-        defer
         src="//js-na1.hs-scripts.com/9494835.js"
-      ></script>
+      ></script> */}
       <header className="backdrop-blur-2xl bg-blue-200/20 border-b-blue-200/50 border-b-[1px] fixed top-0 w-full z-50">
         <div className="flex justify-between items-center max-w-[800px] mx-auto pt-5 pb-3 px-4">
           <button className="w-[40px] h-[40px] rounded-xl bg-white grid place-items-center shadow-sm">
