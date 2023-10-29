@@ -15,7 +15,7 @@ export async function POST(request: Request) {
       });
     }
 
-  const response = await fetch(API_URL + "/api/openai-webhook", {
+  const response = await fetch("https://gpt-v2-git-main-noesrafa.vercel.app/api/openai-webhook", {
     method: "POST",
     body: JSON.stringify({
       messages: [
