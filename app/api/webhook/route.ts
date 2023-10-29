@@ -35,7 +35,7 @@ export async function POST(request: Request) {
     console.log(functionName);
     if (functionName === "talk_to_human") {
       return NextResponse.json({
-        botMessage: "Claro, en un momento te atenderá un agente.",
+        botMessage: null,
         nextModuleNickname: "",
         responseExpected: false,
       });
