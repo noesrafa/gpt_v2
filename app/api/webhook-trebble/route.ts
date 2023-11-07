@@ -29,17 +29,6 @@ export async function POST(request: Request) {
   );
   const resJson = await response.json();
 
-  console.log(
-    "\n\n\nPAYLOAD",
-    payload,
-    "\n\n\nURL",
-    `https://main.treble.ai/session/${req.session_id}/update`,
-    "\n\n\nREQ",
-    req,
-    "\n\n\nRES",
-    resJson
-  );
-
   if (response.status !== 200) {
     return NextResponse.json(
       {
@@ -49,5 +38,5 @@ export async function POST(request: Request) {
     );
   }
 
-  return NextResponse.json(resJson);
+  return NextResponse.json([]);
 }
