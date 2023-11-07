@@ -5,6 +5,7 @@ import { BackIcon, HeruLogo, OptionIcon, SendIcon } from "./icons";
 import { useEffect, useRef, useState } from "react";
 import { functionCall } from "@/utils/function_call";
 import Typing from "@/components/Typing";
+import { Message as MessageType } from "@/types";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState({
@@ -12,7 +13,7 @@ export default function Home() {
     isTyping: false,
   });
   const [inputValue, setInputValue] = useState<string>("");
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<MessageType[] | []>([]);
   const lastMessage = useRef(null);
 
   console.log(messages);
@@ -27,7 +28,7 @@ export default function Home() {
       content: message.content,
     }));
 
-    const messagesToSend: Message[] = [
+    const messagesToSend: MessageType[] = [
       ...messagesWithoutComponent,
       { role: "user", content: message },
     ];

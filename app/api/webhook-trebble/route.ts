@@ -1,50 +1,42 @@
+import { TrebleRequest } from "@/types";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
-  const data = await request.json();
+  const data: TrebleRequest = await request.json();
 
   const isDevelopment = process.env.NODE_ENV;
   const API_URL = isDevelopment
     ? "http://localhost:3000"
     : "https://gpt-v2-git-main-noesrafa.vercel.app";
 
-  const trebbleURL = (session: string) =>
-    `https://main.treble.ai/session/${session}/update`;
-
   if (true) {
-    const response = await fetch(trebbleURL(data.session_id), {
-      method: "POST",
-      body: JSON.stringify({
-        user_session_keys: [
-          {
-            key: "message",
-            value: data.user_session_keys?.[0].value,
-          },
-          {
-            key: "handoff",
-            value: false,
-          },
-        ],
-      }),
-    });
+    console.log("REQ", data);
 
-    return NextResponse.json({
+    const test = {
       user_session_keys: [
         {
           key: "message",
-          value: data.user_session_keys?.[0].value,
-        },
-        {
-          key: "handoff",
-          value: false,
+          value: "pamplinas",
         },
       ],
+    };
+
+    await fetch(
+      "https://api.hubapi.com/conversations/v3/conversations/threads/" +
+        JSON.stringify(data),
+      {
+        headers: {
+          Authorization: "Bearer pat-na1-ede60426-372b-4a88-a642-7835df95d896",
+        },
+      }
+    );
+
+    await fetch(`https://main.treble.ai/session/${data.session_id}/update`, {
+      method: "POST",
+      body: JSON.stringify(test),
     });
 
-    return NextResponse.json({
-      hola: API_URL + "/api/openai",
-      data: data.userMessage.message,
-    });
+    return NextResponse.json(test);
   }
 
   const response = await fetch(
@@ -55,7 +47,7 @@ export async function POST(request: Request) {
         messages: [
           {
             role: "user",
-            content: data.userMessage.message,
+            content: "hola",
           },
         ],
       }),
