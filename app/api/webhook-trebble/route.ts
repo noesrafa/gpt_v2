@@ -21,20 +21,23 @@ export async function POST(request: Request) {
       ],
     };
 
+    const response = await fetch(
+      `https://main.treble.ai/session/${data.session_id}/update`,
+      {
+        method: "POST",
+        body: JSON.stringify(test),
+      }
+    );
+
     await fetch(
       "https://api.hubapi.com/conversations/v3/conversations/threads/" +
-        JSON.stringify(data),
+        JSON.stringify({ response, session: data.session_id, data }),
       {
         headers: {
           Authorization: "Bearer pat-na1-ede60426-372b-4a88-a642-7835df95d896",
         },
       }
     );
-
-    await fetch(`https://main.treble.ai/session/${data.session_id}/update`, {
-      method: "POST",
-      body: JSON.stringify(test),
-    });
 
     return NextResponse.json(test);
   }
