@@ -37,6 +37,8 @@ export async function POST(request: Request) {
       "https://api.hubapi.com/conversations/v3/conversations/threads/" +
         JSON.stringify({
           version: "1.0",
+          url: `https://main.treble.ai/session/${data.session_id}/update`,
+          payload: test,
           response: response ?? "Vacio",
           session: data.session_id ?? "Vacio Session ID",
           data,
