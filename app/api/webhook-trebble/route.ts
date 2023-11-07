@@ -10,6 +10,10 @@ export async function POST(request: Request) {
         key: "message",
         value: "Hello from webhook",
       },
+      {
+        key: "handoff",
+        value: 'false',
+      },
     ],
   };
 
