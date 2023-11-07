@@ -18,6 +18,10 @@ export async function POST(request: Request) {
           key: "message",
           value: "pamplinas",
         },
+        {
+          key: "session_id",
+          value: data.session_id ?? "Vacio Session ID",
+        },
       ],
     };
 
@@ -31,7 +35,12 @@ export async function POST(request: Request) {
 
     await fetch(
       "https://api.hubapi.com/conversations/v3/conversations/threads/" +
-        JSON.stringify({ response, session: data.session_id, data }),
+        JSON.stringify({
+          version: "1.0",
+          response: response ?? "Vacio",
+          session: data.session_id ?? "Vacio Session ID",
+          data,
+        }),
       {
         headers: {
           Authorization: "Bearer pat-na1-ede60426-372b-4a88-a642-7835df95d896",
