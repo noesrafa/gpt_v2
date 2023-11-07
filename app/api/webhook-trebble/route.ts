@@ -12,10 +12,24 @@ export async function POST(request: Request) {
         user_session_keys: [
           {
             key: "message",
-            value: data.session_id ?? "Vacio Session ID",
+            value: data.session_id ?? "Sin session ID",
+          },
+          {
+            key: "request",
+            value: JSON.stringify(data) ?? "body vacio",
+          },
+          {
+            key: "url",
+            value:
+              `https://main.treble.ai/session/${data.session_id}/update` ??
+              "URL vacia",
           },
         ],
       }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${"ak_uO0qsSyY94F0dKCDvD2-r0RRgCz8s5MCrA"}`,
+      },
     })
       .then((res) => res.json())
       .then((responseJson) => {
