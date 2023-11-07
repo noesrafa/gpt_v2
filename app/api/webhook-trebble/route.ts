@@ -21,12 +21,16 @@ export async function POST(request: Request) {
           `https://main.treble.ai/session/${data.session_id}/update` ??
           "URL vacia",
       },
+      {
+        key: "handoff",
+        value: false,
+      },
     ],
   };
 
   try {
     console.log("PAYLOAD", payload);
-    
+
     await fetch(`https://main.treble.ai/session/${data.session_id}/update`, {
       method: "POST",
       body: JSON.stringify(payload),
