@@ -12,7 +12,7 @@ export async function POST(request: Request) {
       },
       {
         key: "handoff",
-        value: 'false',
+        value: "false",
       },
     ],
   };
@@ -37,6 +37,8 @@ export async function POST(request: Request) {
       { status: 500 }
     );
   }
+
+  console.log("\n\n\nREQ", req, "\n\n\nPAYLOAD", payload, "\n\n\nRES", resJson);
 
   return NextResponse.json([]);
 }
