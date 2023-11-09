@@ -21,6 +21,16 @@ export async function POST(request: Request) {
 
   const responseOpenAIJson = await responseOpenAI.json();
 
+  function fakePromise() {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve("La operación se completó exitosamente después de 20 segundos.");
+      }, 60000); // 20 segundos
+    });
+  }
+
+  await fakePromise();
+
   const payload = {
     user_session_keys: [
       {
