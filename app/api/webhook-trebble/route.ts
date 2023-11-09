@@ -51,6 +51,19 @@ export async function POST(request: Request) {
     );
   }
 
+  function fakePromise() {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(
+          "La operación se completó exitosamente después de 20 segundos."
+        );
+      }, 30000); // 20 segundos
+    });
+  }
+
+  await fakePromise();
+
   console.log("\n\n\nREQ", req, "\n\n\nPAYLOAD", payload, "\n\n\nRES", resJson);
+
   return NextResponse.json([]);
 }
