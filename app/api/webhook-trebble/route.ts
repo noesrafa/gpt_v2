@@ -4,6 +4,8 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
   const req: TrebleRequest = await request.json();
 
+  let resJson;
+
   const payload = {
     user_session_keys: [
       {
@@ -17,28 +19,45 @@ export async function POST(request: Request) {
     ],
   };
 
-  const response = await fetch(
-    `https://main.treble.ai/session/${req.session_id}/update`,
-    {
-      method: "POST",
-      body: JSON.stringify(payload),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
-  const resJson = await response.json();
-
-  if (response.status !== 200) {
-    return NextResponse.json(
+  const postTreble = async () => {
+    const response = await fetch(
+      `https://main.treble.ai/session/${req.session_id}/update`,
       {
-        error: resJson.message,
-      },
-      { status: 500 }
+        method: "POST",
+        body: JSON.stringify(payload),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
     );
-  }
+    resJson = await response.json();
+
+    if (response.status !== 200) {
+      return NextResponse.json(
+        {
+          error: resJson.message,
+        },
+        { status: 500 }
+      );
+    }
+  };
+
+  setTimeout(() => {
+    postTreble();
+  }, 60000);
 
   console.log("\n\n\nREQ", req, "\n\n\nPAYLOAD", payload, "\n\n\nRES", resJson);
 
-  return NextResponse.json([]);
+  return NextResponse.json({
+    user_session_keys: [
+      {
+        key: "message",
+        value: "Hello from webhook",
+      },
+      {
+        key: "handoff",
+        value: "false",
+      },
+    ],
+  });
 }
