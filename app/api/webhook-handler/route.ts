@@ -57,7 +57,7 @@ export async function POST(request: Request) {
         resolve(
           "La operación se completó exitosamente después de 20 segundos."
         );
-      }, 1000); // 20 segundos
+      }, 60000); // 20 segundos
     });
   }
 

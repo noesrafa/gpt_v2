@@ -9,5 +9,5 @@ export async function POST(request: Request) {
     body: JSON.stringify(req),
   });
 
-  return NextResponse.json([]);
+  return NextResponse.json(JSON.stringify(req));
 }
